@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Check Out</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+</head>
+
+<body class="grey lighten-3">
+<div class="mt-5 pt-4">
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+      {% endfor %}
+  {% endif %}
+</div>
+  <!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link waves-effect" href="{% url 'core:homepage' %}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'core:checkout' %}">Check Out</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'CustomerUser:login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'CustomerUser:logout' %}">Log Out</a>
+          </li>
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+          <li class="nav-item">
+            <a class="nav-link waves-effect">
+              <span class="clearfix d-none d-sm-inline-block"> {{ request.user.username }}  </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'core:checkout' %}">
+              <span class="badge red z-depth-1 mr-1"> {{ numberInCart }}  </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  <!-- Navbar -->
+
+  <!--Main layout-->
+  <main class="mt-5 pt-4">
+    <div class="container wow fadeIn">
+
+      <!-- Heading -->
+      <h2 class="my-5 h2 text-center">Checkout form</h2>
+
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-8 mb-4">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card content-->
+            <form class="card-body" method="post">
+              {% csrf_token %}
+              <!--Grid row-->
+              <div class="row">
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-2">
+
+                  <!--firstName-->
+                  <div class="md-form ">
+                    <input type="text" id="firstName" class="form-control" value="{{ request.user.first_name }}">
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-2">
+
+                  <!--lastName-->
+                  <div class="md-form">
+                    <input type="text" id="lastName" class="form-control" value="{{ request.user.last_name }}">
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+              </div>
+              <!--Grid row-->
+
+              <!--Username-->
+              <div class="md-form input-group pl-0 mb-5">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
+                <input type="text" class="form-control py-0" value="{{ request.user.username }}" aria-describedby="basic-addon1">
+              </div>
+
+              <!--email-->
+              <div class="md-form mb-5">
+                <input type="text" id="email" class="form-control" value="{{ request.user.email }}">
+<!--                <label for="email" class=""></label>-->
+              </div>
+
+              <!--address-->
+              <div class="md-form mb-5">
+                <input type="text" id="address" name="address" class="form-control" value="{{ request.user.address }}">
+              </div>
+
+               <div class="md-form mb-5">
+                <input type="text" id="phonenum" class="form-control" value="{{ request.user.phone_number }}">
+              </div>
+
+              <div class="d-block my-3">
+                <div class="custom-control custom-radio">
+                  <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"
+                         value="Credit card" required>
+                  <label class="custom-control-label" for="credit">Credit card</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input id="debit" name="paymentMethod" type="radio" class="custom-control-input"
+                         value="Pay on delivery" checked  required>
+                  <label class="custom-control-label" for="debit">Pay on delivery</label>
+                </div>
+
+              </div>
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+            </form>
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-4 mb-4">
+
+          <!-- Heading -->
+          <h4 class="d-flex justify-content-between align-items-center mb-5">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{ numberInCart }}</span>
+          </h4>
+
+          <!-- Cart -->
+          <ul class="list-group mb-5 z-depth-2">
+            {% for item in cartItem %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{ item.item.product.title }}  x{{ item.quantity }}</h6>
+                <span class="text-muted">${{ item.item.sale_price }}</span>
+              </div>
+              <span>
+                <a href="{% url 'core:removeFromCart' item.item.pk cart.pk %}" class="btn btn-danger btn-md my-0 p">Remove</a>
+              </span>
+            </li>
+            {% endfor %}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>${{ totalCost }}</strong>
+            </li>
+          </ul>
+          <!-- Cart -->
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+    <hr class="my-4">
+
+    <!-- Social icons -->
+    <div class="pb-4">
+      <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+        <i class="fab fa-facebook-f mr-3"></i>
+      </a>
+
+      <a href="https://twitter.com/MDBootstrap" target="_blank">
+        <i class="fab fa-twitter mr-3"></i>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+        <i class="fab fa-youtube mr-3"></i>
+      </a>
+
+      <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
+        <i class="fab fa-google-plus-g mr-3"></i>
+      </a>
+
+      <a href="https://dribbble.com/mdbootstrap" target="_blank">
+        <i class="fab fa-dribbble mr-3"></i>
+      </a>
+
+      <a href="https://pinterest.com/mdbootstrap" target="_blank">
+        <i class="fab fa-pinterest mr-3"></i>
+      </a>
+
+      <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+        <i class="fab fa-github mr-3"></i>
+      </a>
+
+      <a href="http://codepen.io/mdbootstrap/" target="_blank">
+        <i class="fab fa-codepen mr-3"></i>
+      </a>
+    </div>
+    <!-- Social icons -->
+
+    </div>
+    <!--/.Copyright-->
+
+  </footer>
+  <!--/.Footer-->
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+  </script>
+</body>
+
+</html>
